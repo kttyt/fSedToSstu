@@ -1,6 +1,6 @@
-﻿using Domino;
+﻿using System.Linq;
+using Domino;
 using LotusLib.Documents;
-using LotusLib.Exceptions;
 
 namespace LotusLib.Auxiliary
 {
@@ -13,7 +13,8 @@ namespace LotusLib.Auxiliary
                 if (item.Name.ToLower().Equals(name.ToLower()))
                 {
                     object[] values = (object[])item.Values;
-                    return values[0].ToString();
+                    //return values[0].ToString();
+                    return values.First(value => value != null).ToString();
                 }
             }
             //throw new NoFieldFoundException();

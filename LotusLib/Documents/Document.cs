@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using LotusLib.Auxiliary;
+﻿using LotusLib.Auxiliary;
 
 namespace LotusLib.Documents
 {

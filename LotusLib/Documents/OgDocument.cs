@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Domino;
 using LotusLib.Auxiliary;
@@ -13,6 +12,7 @@ namespace LotusLib.Documents
         public Solution Solution                { get; private set; }
         public string Specialization            { get; private set; }
         public DateTime? OutRegistrationDate    { get; private set; }
+        public string OutRegistrationNumber     { get; private set; }
         public DateTime AcceptanceDate          { get; private set; }
         public DateTime RegistrationDate        { get; private set; }
         public string Subject                   { get; private set; }
@@ -43,6 +43,7 @@ namespace LotusLib.Documents
                 Solution = ParseSolution(document.GetFieldValue("solution")),
                 Specialization = document.GetFieldValue("Specialization"),
                 OutRegistrationDate = outRegDate,
+                OutRegistrationNumber = document.GetFieldValue("Out_RegistrationNumber"),
                 AcceptanceDate = DateTime.Parse(document.GetFieldValue("acceptance_date")),
                 RegistrationDate = DateTime.Parse(document.GetFieldValue("registration_date")),
                 Subject = document.GetFieldValue("subject"),

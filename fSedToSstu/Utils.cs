@@ -1,13 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using LotusLib.Auxiliary;
 using LotusLib.Documents;
 using SstuLib;
-using SstuLib.Questions;
 using SstuLib.Exceptions;
+using SstuLib.Questions;
 
 namespace fSedToSstu
 {
@@ -18,13 +16,17 @@ namespace fSedToSstu
             var reqFormat = ogDoc.DeliveryType.Contains("Электронное сообщение")
                 ? RequestFormat.Electronic
                 : RequestFormat.Other;
+            var isDirect = string.IsNullOrEmpty(ogDoc.Specialization);
+            var number = isDirect
+                ? ogDoc.Number
+                : ogDoc.OutRegistrationNumber;
             var request = new Request
             {
                 RequestFormat = reqFormat,
                 CreateDate = ogDoc.OutRegistrationDate,
-                IsDirect = string.IsNullOrEmpty(ogDoc.Specialization),
+                IsDirect = isDirect,
                 Name = ogDoc.DeclarantTitle,
-                Number = ogDoc.Number
+                Number = number
             };
             var question = CreateQuestion(request, ogDoc);
             request.Questions.Add(question);

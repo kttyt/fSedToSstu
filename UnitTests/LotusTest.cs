@@ -1,9 +1,5 @@
-﻿using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using Domino;
+﻿using System.IO;
 using LotusLib;
-using LotusLib.Documents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests

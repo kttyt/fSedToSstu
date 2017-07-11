@@ -1,10 +1,6 @@
 ﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
 using LotusLib;
 using SstuLib;
 using SstuLib.Auxiliary;
@@ -23,7 +19,7 @@ namespace fSedToSstu
             };
             loader.OnError += (o, foo) => WriteLog(foo);
 
-            var documents = loader.Get("[StatusId] contains \"in_file\" and [acceptance_date] >=  01/06/2017 and [acceptance_date] <  01/07/2017 and [Form] contains \"doc_og\"");
+            var documents = loader.Get("[acceptance_date] >=  01/06/2017 and [acceptance_date] <  01/07/2017 and [Form] contains \"doc_og\"");
 
             using (var ms = File.Create("temp.zip"))
             using (var zipArchive = new ZipArchive(ms, ZipArchiveMode.Create, true))
@@ -36,6 +32,12 @@ namespace fSedToSstu
                     try
                     {
                         req = document.CreateRequest();
+                        var lowNum = req.Number.ToLower();
+                        if (lowNum.StartsWith("a26") || lowNum.StartsWith("а26")) //en, ru
+                        {
+                            WriteLog($"Пропускается {document.Number} - причина неподдерживаемый номер {req.Number}");
+                            continue;
+                        }
                     }
                     catch (ValidationException)
                     {

@@ -39,7 +39,6 @@
       <HintPath>..\packages\interop.domino.dll.1.0.0\lib\Interop.Domino.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
-    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Core">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
