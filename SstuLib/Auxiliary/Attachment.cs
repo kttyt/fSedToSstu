@@ -1,12 +1,17 @@
 ﻿using System;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace SstuLib.Auxiliary
 {
     public class Attachment
     {
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; }
+
+        [JsonProperty(PropertyName = "content")]
         public string Content { get; }
+
         internal int Length => Content.Length;
 
         public Attachment(string filename, byte[] contentBytes)

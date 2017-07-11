@@ -48,9 +48,9 @@ namespace LotusLib
                 {
                     ogDoc = OgDocument.FromNotes(doc);
                 }
-                catch (NotImplementedException)
+                catch (NotImplementedException ex)
                 {
-                    RaseNewMessage("ERROR: Неожиданное значение при формировании документа. Переход к следующему."); 
+                    RaseNewMessage($"ERROR: Неожиданное значение при формировании документа. '{ex}'"); 
                     continue;
                 }
 
@@ -74,6 +74,7 @@ namespace LotusLib
                 try
                 {
                     ogDoc.LoadResultsFromSed(_lotus, ResultReplicaId);
+                    RaseNewMessage($"Поиск результата для {ogDoc.Number}");
                 }
                 catch (Exception)
                 {

@@ -9,15 +9,32 @@ namespace SstuLib
 {
     public class Request
     {
+        [JsonProperty(PropertyName = "departmentId")]
         public Guid DepartmentId { get; set; }
+
+        [JsonProperty(PropertyName = "isDirect")]
         public bool IsDirect { get; set; }
+
+        [JsonProperty(PropertyName = "format")]
         [JsonConverter(typeof(StringEnumConverter))]
         public RequestFormat RequestFormat { get; set; }
+
+        [JsonProperty(PropertyName = "number")]
         public string Number { get; set; }
+
+        [JsonProperty(PropertyName = "createDate")]
         public DateTime? CreateDate { get; set; }
+
+        [JsonProperty(PropertyName = "name")]
         public string Name { get; set; }
+
+        [JsonProperty(PropertyName = "address")]
         public string Address { get; set; }
+
+        [JsonProperty(PropertyName = "email")]
         public string Email { get; set; }
+
+        [JsonProperty(PropertyName = "questions")]
         public List<Question> Questions { get; set; }
 
         public Request()

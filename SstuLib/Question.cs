@@ -6,11 +6,15 @@ namespace SstuLib
 {
     public abstract class Question
     {
+        [JsonProperty(PropertyName = "code")]
         public string Code { get; set; }
+
+        [JsonProperty(PropertyName = "incomingDate")]
         public DateTime IncomingDate { get; set; }
 
         protected Request ParentReq { get; }
 
+        [JsonProperty(PropertyName = "status")]
         [JsonConverter(typeof(StringEnumConverter))]
         public abstract QuestionStatus Status { get; }
 
