@@ -62,8 +62,8 @@ namespace LotusLib
                 }
                 catch (NoAttachmentException)
                 {
-                    RaseNewMessage($"ERROR: {ogDoc.Number} - отсутствуют вложения");
-                    continue;
+                    RaseNewMessage($"WARNING: {ogDoc.Number} - отсутствуют вложения");
+                    //continue;
                 }
                 RaseNewMessage($"{ogDoc.Number} - получен");
                 ogDocuments.Add(ogDoc);
@@ -75,6 +75,10 @@ namespace LotusLib
                 {
                     ogDoc.LoadResultsFromSed(_lotus, ResultReplicaId);
                     RaseNewMessage($"Поиск результата для {ogDoc.Number}");
+                }
+                catch (DocumentsNotFoundException)
+                {
+                    RaseNewMessage($"WARNING: {ogDoc.Number} - результат отсутствует");
                 }
                 catch (Exception)
                 {

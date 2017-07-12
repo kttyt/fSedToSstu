@@ -14,7 +14,9 @@ namespace LotusLib.Auxiliary
                 {
                     object[] values = (object[])item.Values;
                     //return values[0].ToString();
-                    return values.First(value => value != null).ToString();
+                    return values.First(value => value != null)
+                        .ToString()
+                        .Trim();
                 }
             }
             //throw new NoFieldFoundException();
