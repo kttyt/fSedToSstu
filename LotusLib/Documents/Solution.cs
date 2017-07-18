@@ -6,6 +6,7 @@
         NotSupp,
         Supp,
         Answered,
-        Redirected
+        Redirected,
+        LeftWithoutAnswer
     }
 }

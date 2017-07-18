@@ -46,7 +46,7 @@ namespace fSedToSstu
                     }
                     catch (Exception ex)
                     {
-                        WriteLog($"ERROR: Ошибка при обработке документа {document.Number}; '{ex.Message}'");
+                        WriteLog($"ERROR: Ошибка при обработке документа {document.Number} - {ex.Message}");
                         continue;
                     }
                     var name = Path.ChangeExtension(Guid.NewGuid().ToString(), "json");

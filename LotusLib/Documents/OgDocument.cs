@@ -65,6 +65,8 @@ namespace LotusLib.Documents
                 return Solution.Answered;
             if (str.Equals("направлено по подведомственности"))
                 return Solution.Redirected;
+            if (str.Equals("оставлено без рассмотрения"))
+                return Solution.LeftWithoutAnswer;
             throw new NotImplementedException($"Неизвестное решение '{str}'");
         }
     }

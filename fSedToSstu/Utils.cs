@@ -54,8 +54,12 @@ namespace fSedToSstu
                         RegistrationDate = ogDoc.RegistrationDate
                     };
                 case Solution.Redirected:
-                    throw new NotImplementedException("Направление по подведомости не поддерживается");
+                    throw new NotImplementedException("Статус направление по подведомости не поддерживается");
+                case Solution.LeftWithoutAnswer:
+                    throw new NotImplementedException("Статус оставленно без рассмотрения не поддерживается");
                 default:
+                    if (ogDoc.Attachments.Length != 1)
+                        throw new Exception("Неверное кол-во вложений");
                     return new Answered(req)
                     {
                         Code = code,

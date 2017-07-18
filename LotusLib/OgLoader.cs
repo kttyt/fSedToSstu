@@ -74,7 +74,7 @@ namespace LotusLib
                 try
                 {
                     ogDoc.LoadResultsFromSed(_lotus, ResultReplicaId);
-                    RaseNewMessage($"Поиск результата для {ogDoc.Number}");
+                    RaseNewMessage($"Получен результат для {ogDoc.Number}");
                 }
                 catch (DocumentsNotFoundException)
                 {
