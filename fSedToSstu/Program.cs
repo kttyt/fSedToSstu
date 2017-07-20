@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.IO.Compression;
+using CommandLine;
 using LotusLib;
 using SstuLib;
 using SstuLib.Auxiliary;
@@ -12,16 +13,20 @@ namespace fSedToSstu
     {
         static void Main(string[] args)
         {
-            var loader = new OgLoader(@"ServerName", "password")
+            Guid departmentId;
+            var options = ParseArgs(args, out departmentId);
+
+            var loader = new OgLoader(options.ServerName, options.Password)
             {
-                OgReplicaId = "4525807B011CF66F",
-                ResultReplicaId = "4525807C001D7F74"
+                OgReplicaId = options.OgReplicaId,
+                ResultReplicaId = options.ResultReplicaId
             };
             loader.OnError += (o, foo) => WriteLog(foo);
 
-            var documents = loader.Get("[acceptance_date] >=  01/07/2017 and [acceptance_date] <  01/08/2017 and [Form] contains \"doc_og\"");
+            var documents = loader.Get(options.SearchQuery);
+            WriteLog($"Найдено {documents.Count} по запросу '{options.SearchQuery}'");
 
-            using (var ms = File.Create("temp.zip"))
+            using (var ms = File.Create(options.OutputFilename))
             using (var zipArchive = new ZipArchive(ms, ZipArchiveMode.Create, true))
             {
                 foreach (var document in documents)
@@ -32,10 +37,11 @@ namespace fSedToSstu
                     try
                     {
                         req = document.CreateRequest();
+                        req.DepartmentId = departmentId;
                         var lowNum = req.Number.ToLower();
                         if (lowNum.StartsWith("a26") || lowNum.StartsWith("а26")) //en, ru
                         {
-                            WriteLog($"WARNING: Пропускается {document.Number} - причина неподдерживаемый номер {req.Number}");
+                            WriteLog($"WARNING: Пропускается {document.Number} - неподдерживаемый номер {req.Number}");
                             continue;
                         }
                     }
@@ -58,6 +64,20 @@ namespace fSedToSstu
                     }
                 }
             }
+        }
+
+        private static Options ParseArgs(string[] args, out Guid departmentId)
+        {
+            var options = new Options();
+            var isValid = Parser.Default.ParseArgumentsStrict(args, options);
+            var isValidId = Guid.TryParse(options.DepartmentIdRaw, out departmentId);
+
+            if (!isValid || !isValidId)
+            {
+                Console.WriteLine(options.GetUsage());
+                Environment.Exit(1);
+            }
+            return options;
         }
 
         public static void WriteLog(string msg)
