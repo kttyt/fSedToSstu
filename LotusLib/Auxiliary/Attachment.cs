@@ -6,7 +6,7 @@ namespace LotusLib.Auxiliary
     public class Attachment : IDisposable
     {
         private bool _disposed = false;
-        private string AttachPath { get; }
+        private string AttachPath { get; set; }
         public string Name => Path.GetFileName(AttachPath);
 
         public Attachment(string path)
@@ -22,7 +22,6 @@ namespace LotusLib.Auxiliary
         public void Dispose()
         {
             Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
@@ -32,11 +31,20 @@ namespace LotusLib.Auxiliary
 
             if (disposing)
             {
-                // Free any other managed objects here.
-                //
+                GC.SuppressFinalize(this);
             }
-
-            File.Delete(AttachPath);
+            if (this.AttachPath != null)
+            {
+                try
+                {
+                    File.Delete(this.AttachPath);
+                }
+                catch
+                {
+                    // ignored
+                }
+                this.AttachPath = null;
+            }
             _disposed = true;
         }
 
