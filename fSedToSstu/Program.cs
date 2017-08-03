@@ -26,13 +26,10 @@ namespace fSedToSstu
             var documents = loader.Get(options.SearchQuery);
             WriteLog($"Найдено {documents.Count} по запросу '{options.SearchQuery}'");
 
-            using (var ms = File.Create(options.OutputFilename))
-            using (var zipArchive = new ZipArchive(ms, ZipArchiveMode.Create, true))
+            using (var zipArchive = new ZipArchiveParted(options.OutputFilename, 5e+7))
             {
                 foreach (var document in documents)
                 {
-                    if (ms.Length > 1e+8)
-                        throw new Exception("ERROR: Слишком большой размер архива");
                     Request req;
                     try
                     {
@@ -56,12 +53,7 @@ namespace fSedToSstu
                         continue;
                     }
                     var name = Path.ChangeExtension(Guid.NewGuid().ToString(), "json");
-                    var entry = zipArchive.CreateEntry(name, CompressionLevel.Optimal);
-                    using (var entryStream = entry.Open())
-                    using (var sw = new StreamWriter(entryStream))
-                    {
-                        sw.Write(Converter.Convert(req));
-                    }
+                    zipArchive.AddEntry(name, Converter.Convert(req));
                 }
             }
         }
