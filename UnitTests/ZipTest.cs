@@ -29,7 +29,12 @@ namespace UnitTests
                     foreach (var i in Enumerable.Range(0, 300))
                     {
                         var name = Path.ChangeExtension(Guid.NewGuid().ToString(), "json");
-                        zip.AddEntry(name, content);
+                        var entry = zip.CreateEntry(name);
+                        using (var entryStream = entry.Open())
+                        using (var sw = new StreamWriter(entryStream))
+                        {
+                            sw.Write(content);
+                        }
                     }
                     Assert.IsTrue(zip.PartsCount == Directory.GetFiles("dir").Length);
                 }

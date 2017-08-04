@@ -1,10 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace fSedToSstu
 {
@@ -15,7 +11,7 @@ namespace fSedToSstu
 
         public double MaxSize { get; set; }
         public string TemplateName { get; set; }
-        public int PartsCount { get; set; }
+        public int PartsCount { get; private set; }
 
         public ZipArchiveParted(string template, double maxSize)
         {
@@ -42,16 +38,12 @@ namespace fSedToSstu
             }
         }
 
-        public void AddEntry(string entryName, string str)
+        public ZipArchiveEntry CreateEntry(string entryName)
         {
-            if(FileStream == null || FileStream.Length > MaxSize)
+            if (FileStream == null || FileStream.Length > MaxSize)
                 CreateNewPart();
             var entry = ZipArchive.CreateEntry(entryName, CompressionLevel.Optimal);
-            using (var entryStream = entry.Open())
-            using (var sw = new StreamWriter(entryStream))
-            {
-                sw.Write(str);
-            }
+            return entry;
         }
 
         private string GetNextName()

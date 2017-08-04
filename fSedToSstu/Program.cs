@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.IO.Compression;
 using CommandLine;
 using LotusLib;
 using SstuLib;
@@ -53,7 +52,12 @@ namespace fSedToSstu
                         continue;
                     }
                     var name = Path.ChangeExtension(Guid.NewGuid().ToString(), "json");
-                    zipArchive.AddEntry(name, Converter.Convert(req));
+                    var entry = zipArchive.CreateEntry(name);
+                    using (var entryStream = entry.Open())
+                    using (var sw = new StreamWriter(entryStream))
+                    {
+                        sw.Write(Converter.Convert(req));
+                    }
                 }
             }
         }
