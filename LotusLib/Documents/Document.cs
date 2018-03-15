@@ -5,10 +5,12 @@ namespace LotusLib.Documents
     public abstract class Document
     {
         public string Id { get; }
+        public string GroudId { get; protected set; }
 
+        public Document[] Links { get; internal set; }
         public Attachment[] Attachments { get; internal set; }
 
-        internal Document(string id)
+        protected Document(string id)
         {
             this.Id = id;
         }

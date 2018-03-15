@@ -17,7 +17,6 @@ namespace LotusLib.Documents
         public DateTime RegistrationDate        { get; private set; }
         public string Subject                   { get; private set; }
         public string DeclarantTitle            { get; private set; }
-        public string GroudId                   { get; private set; }
         public OgResult[] Results               { get; internal set; }
 
         internal OgDocument(string id) : base(id)

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 using CommandLine;
-using LotusLib;
+using LotusLib.Loaders;
 using SstuLib;
 using SstuLib.Auxiliary;
 using SstuLib.Exceptions;
@@ -20,7 +20,7 @@ namespace fSedToSstu
                 OgReplicaId = options.OgReplicaId,
                 ResultReplicaId = options.ResultReplicaId
             };
-            loader.OnError += (o, foo) => WriteLog(foo);
+            loader.OnMessage += (o, foo) => WriteLog(foo);
 
             var documents = loader.Get(options.SearchQuery);
             WriteLog($"Найдено {documents.Count} по запросу '{options.SearchQuery}'");

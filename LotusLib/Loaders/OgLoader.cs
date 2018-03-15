@@ -5,39 +5,22 @@ using LotusLib.Auxiliary;
 using LotusLib.Documents;
 using LotusLib.Exceptions;
 
-namespace LotusLib
+namespace LotusLib.Loaders
 {
-    public class OgLoader
+    public class OgLoader : Loader
     {
-        public string LotusPass { get; set; }
         public string OgReplicaId { get; set; }
         public string ResultReplicaId { get; set; }
-        public string Server { get; set; }
-
-        private readonly Lotus _lotus;
-
-        public delegate void MyEventHandler(object obj, string foo);
-
-        public event MyEventHandler OnError;
 
         public OgLoader(string server, string pass)
-        {
-            Server = server;
-            LotusPass = pass;
-            _lotus = new Lotus(Server);
-        }
-
-        private void RaseNewMessage(string msg)
-        {
-            OnError?.Invoke(this, msg);
-        }
+            : base(server, pass) { }
 
         public IList<OgDocument> Get(string query)
         {
-            if(!_lotus.IsInitialize)
-                _lotus.Init(LotusPass);
+            if(!Lotus.IsInitialize)
+                Lotus.Init(LotusPass);
 
-            var docs = _lotus.SearchDocumentsByFormula(OgReplicaId, query);
+            var docs = Lotus.SearchDocumentsByFormula(OgReplicaId, query);
 
             var ogDocuments = new List<OgDocument>();
             for (var count = 1; count <= docs.Count; count++)
@@ -56,7 +39,7 @@ namespace LotusLib
 
                 try
                 {
-                    ogDoc.Attachments = _lotus.GetAttachments(doc, "ответ")
+                    ogDoc.Attachments = Lotus.GetAttachments(doc, "ответ")
                         .Select(path => new Attachment(path))
                         .ToArray();
                 }
@@ -73,7 +56,7 @@ namespace LotusLib
             {
                 try
                 {
-                    ogDoc.LoadResultsFromSed(_lotus, ResultReplicaId);
+                    ogDoc.LoadResultsFromSed(Lotus, ResultReplicaId);
                     RaseNewMessage($"Получен результат для {ogDoc.Number}");
                 }
                 catch (DocumentsNotFoundException)
